@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <title>Error. Support centre.</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- Page -->
+<div class="container wrapper">
+
+    <!-- NavBar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img alt="Support centre" src="/img/logo.png">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Main</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form id="form_search" method="post" action="/search" class="navbar-form navbar-left">
+                    <div class="input-group">
+                        <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
+                               placeholder="Search for...">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li th:if="${#httpServletRequest.remoteUser ne null}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-haspopup="true" aria-expanded="false"
+                           th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="text-align-right" href="/admin">Admin panel</a></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <input class="submitToURL text-align-right" type="submit" value="Sign Out"/>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li th:if="${#httpServletRequest.remoteUser eq null}">
+                        <a href="/login">Log in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class=" hidden-xs col-sm-3"></div>
+
+    <!-- Content -->
+    <div class=" col-sm-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>404/500</h1></div>
+        <div class="panel-body">
+            <p>Page not found or some error occurred.</p>
+        </div>
+    </div>
+</div>
+
+    <div class=" hidden-xs col-sm-3"></div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        Powered by <a target="_blank" href="https://www.fb.com/g.galantsev">George Galantsev</a>.
+    </div>
+</footer>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/lib.js"></script>
+
+</body>
+</html>

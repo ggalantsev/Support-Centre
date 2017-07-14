@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <title>Department. Support centre.</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- Page -->
+<div class="container wrapper">
+
+<div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- NavBar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img alt="Support centre" src="/img/logo.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
+            <ul class="nav navbar-nav">
+                <li><a href="/">Main</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form id="form_search" method="post" action="/search" class="navbar-form navbar-left">
+                <div class="input-group">
+                    <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
+                           placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${#httpServletRequest.remoteUser ne null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"
+                       th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="text-align-right" href="/admin">Admin panel</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <input class="submitToURL text-align-right" type="submit" value="Sign Out"/>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li th:if="${#httpServletRequest.remoteUser eq null}">
+                    <a href="/login">Log in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </nav>
+
+    <!-- Left sidebar -->
+    <div class=" col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group" >
+            <a th:each="d : ${departments}"
+               href="#" th:href="@{|/department/${d.slug}|}"
+               class="list-group-item"
+               th:class="(${d.slug == department.slug}?'list-group-item active':'list-group-item')"
+               th:text="${d.name} ">Department</a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class=" col-xs-12 col-sm-9 col-md-10 " style="padding: 0px">
+        <!-- Main content -->
+        <div class=" col-md-10">
+            <p class="pull-left visible-xs" style="margin:0px">
+            <button type="button" class="btn btn-primary btn-xs"
+                    data-toggle="offcanvas" style="margin:0px">Departments</button>
+        </p>
+            <div class="btn-group pull-right" style="margin:0px">
+                <button type="button" title="Add issue"
+                        class="btn btn-sm btn-default"
+                        style="margin:0px;"
+                        data-toggle="modal" data-target="#Modal_Add"
+                ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" title="Edit department"
+                        class="btn btn-sm btn-default"
+                        style="margin:0px;"
+                        data-toggle="modal" data-target="#Modal_Edit"
+                ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 th:text="${department.name}">
+                    Some issue
+                    </h2>
+                </div>
+                <div class="panel-body">
+                    <p th:utext="${department.description}">Advice text.</p>
+                </div>
+                <!-- List group -->
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="s : ${issues}">
+                        <a href="#" th:href="@{'/issue/'+${s.id}}"
+                        th:text="${s.name}">Advice 1</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Right sidebar -->
+        <div class=" col-sm-12 col-md-2 ">
+            <button type="button" class="btn btn-success ">Success</button>
+            <button type="button" class="btn btn-info ">Create request</button>
+            <button type="button" class="btn btn-warning ">Some action</button>
+            <button type="button" class="btn btn-danger ">One more action</button>
+            <button type="button" class="btn btn-default ">Action</button>
+            <button type="button" class="btn btn-primary ">Last Action</button>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+        <div class="container">
+            Powered by <a target="_blank" href="https://www.fb.com/g.galantsev">George Galantsev</a>.
+        </div>
+</footer>
+
+<!-- Modal add issue-->
+<div class="modal fade" id="Modal_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"
+                th:text="|Add new issue to ${department.name}.|">Add new issue</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/add/issue/"
+                      th:action="@{|/add/issue/${department.slug}|}" class="well-sm">
+                    <div class="form-group">
+                        <label for="input_issue_name" class="control-label">Issue name</label>
+                        <input id="input_issue_name" type="text" class="form-control"
+                        name="issueName">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_parent_id" class="control-label">Parent ID</label>
+                        <input  id="input_parent_id" type="text" class="form-control"
+                        name="parentId" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_issue_content" class="control-label">Issue content</label>
+                        <textarea id="input_issue_content" class="form-control" rows="4"
+                        name="issueContent"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Create issue</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit department-->
+<div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit department</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/edit/department/departmentslug"
+                      th:action="@{|/edit/department/${department.slug}|}" class="well-sm">
+                    <div class="form-group">
+                        <label for="input_department_name" class="control-label">Department name</label>
+                        <input id="input_department_name" type="text" class="form-control"
+                        name="departmentName" th:value="${department.name}">
+                    </div>
+                    <div class="form-group" >
+                        <label for="input_department_slug" class="control-label">Department slug</label>
+                        <input  id="input_department_slug" type="text" class="form-control"
+                        name="departmentSlug" th:value="${department.slug}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_department_description" class="control-label">Department description</label>
+                        <textarea id="input_department_description" class="form-control" rows="3"
+                        name="departmentDescription" th:text="${department.description}"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Save department</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/lib.js"></script>
+<script src="/js/tinymce/tinymce.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <title>Issue. Support centre.</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- Page -->
+<div class="container wrapper">
+
+    <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- NavBar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img alt="Support centre" src="/img/logo.png">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Main</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form id="form_search" method="post" action="/search" class="navbar-form navbar-left">
+                    <div class="input-group">
+                        <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
+                               placeholder="Search">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li th:if="${#httpServletRequest.remoteUser ne null}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-haspopup="true" aria-expanded="false"
+                           th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="text-align-right" href="/admin">Admin panel</a></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <input class="submitToURL text-align-right" type="submit" value="Sign Out"/>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li th:if="${#httpServletRequest.remoteUser eq null}">
+                        <a href="/login">Log in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Left sidebar -->
+    <div class=" col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group" >
+            <a th:each="d : ${departments}"
+               href="#" th:href="@{|/department/${d.slug}|}"
+               class="list-group-item"
+               th:class="(${d.slug == issue.department.slug}?'list-group-item active':'list-group-item')"
+               th:text="${d.name} ">Department</a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class=" col-xs-12 col-sm-9 col-md-10 " style="padding: 0px">
+        <!-- Main content -->
+        <div class=" col-md-10">
+            <p class="pull-left visible-xs" style="margin:0px">
+                <button type="button" class="btn btn-primary btn-xs"
+                        data-toggle="offcanvas" style="margin:0px">Departments</button>
+            </p>
+            <div class="pull-right btn-group" style="margin:0px">
+                <button type="button" title="Add child issue"
+                        class="btn btn-sm btn-default"
+                        style="margin:0px;"
+                        data-toggle="modal" data-target="#Modal_Add"
+                ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" title="Edit issue"
+                        class="btn btn-sm btn-default"
+                        style="margin:0px;"
+                        data-toggle="modal" data-target="#Modal_Edit"
+                ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                <button type="button" title="Remove issue"
+                        class="btn btn-sm btn-default"
+                        style="margin:0px;"
+                        data-toggle="modal" data-target="#Modal_Remove"
+                ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 th:text="${issue.name}">
+                    Some issue
+                    </h2></div>
+                <div class="panel-body">
+                    <ol th:if="${issueParent ne null}" class="breadcrumb visible-xs">
+                        <li><a href="#" th:href="@{'/issue/'+${issueParent.id}}"
+                               th:text="|← ${issueParent.name}|">Parent issue</a></li>
+                    </ol>
+                    <ol th:if="${issueParent eq null}" class="breadcrumb visible-xs">
+                        <li><a href="#" th:href="@{'/issue/'+${issue.department.id}}"
+                               th:text="|← ${issue.department.name}|">Parent department</a></li>
+                    </ol>
+                    <ol class="breadcrumb hidden-xs">
+                        <li><a th:href="@{|/department/${issue.department.slug}|}" href="#"
+                               th:text="${issue.department.name}">Back to parent department</a></li>
+                        <li th:each="p : ${parentList}"><a href="#" th:href="@{'/issue/'+${p.id}}"
+                               th:text="${p.name}">Parent issue</a></li>
+                        <li class="active" th:text="${issue.name}">Current issue</li>
+                    </ol>
+                    <p th:utext="${issue.content}">Some information and recommendations for resolving issue.</p>
+                    <button type="button" class="btn btn-info ">Create request</button>
+                </div>
+                <!-- List group -->
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="s : ${issues}">
+                        <a href="#" th:href="@{${s.id}}"
+                        th:text="${s.name}">Advice 1</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Right sidebar -->
+        <div class=" col-sm-12 col-md-2 ">
+            <button type="button" class="btn btn-success ">Success</button>
+            <button type="button" class="btn btn-warning ">Some action</button>
+            <button type="button" class="btn btn-danger ">One more action</button>
+            <button type="button" class="btn btn-default ">Action</button>
+            <button type="button" class="btn btn-primary ">Last Action</button>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+        <div class="container">
+            Powered by <a target="_blank" href="https://www.fb.com/g.galantsev">George Galantsev</a>.
+        </div>
+    </footer>
+
+<!-- Modal add issue-->
+<div class="modal fade" id="Modal_Add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"
+                    >Add new issue</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/add/issue/"
+                      th:action="@{|/add/issue/${issue.department.slug}|}">
+                    <div class="form-group">
+                        <label for="input_issue_name" class="control-label">Issue name</label>
+                        <input id="input_issue_name" type="text" class="form-control"
+                               name="issueName">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_parent_id" class="control-label">Parent ID</label>
+                        <input  id="input_parent_id" type="text" class="form-control"
+                                name="parentId" value="0" th:value="${issue.id}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_issue_content" class="control-label">Issue content</label>
+                        <textarea id="input_issue_content" class="form-control" rows="4"
+                                  name="issueContent"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Create issue</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit issue-->
+<div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit issue</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/edit/issue">
+                    <div class="form-group">
+                        <label for="input_issue_name" class="control-label">Issue name</label>
+                        <input id="input_issue_name" type="text" class="form-control"
+                               name="issueName" th:value="${issue.name}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_issue_id" class="control-label">Issue id</label>
+                        <input  id="input_issue_id" type="text" class="form-control"
+                                name="issueId" th:value="${issue.id}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="input_parent_id" class="control-label">Parent ID</label>
+                        <input  id="input_parent_id" type="text" class="form-control"
+                                name="parentId" value="0" th:value="${issue.pid}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_issue_content" class="control-label">Issue content</label>
+                        <textarea id="input_issue_content" class="form-control" rows="3"
+                                  name="issueContent" th:text="${issue.content}"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Save issue</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal remove issue-->
+<div class="modal fade" id="Modal_Remove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Remove issue?</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/remove/issue/999"
+                      th:action="@{|/remove/issue/${issue.id}|}" class="form-horizontal">
+                    <p>Do u really want to delete this issue and all it's childs? <br/>
+                    Write down it's ID to do this.</p>
+                    <div class="col-sm-6 col-sm-offset-3">
+                    <div class="form-group">
+                        <label for="input_issue_id" class=" col-sm-6 control-label">Issue ID</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" th:text="${issue.id}">999</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="input_parent_id" class=" col-sm-6 control-label">Enter ID here</label>
+                        <div class="col-sm-6">
+                            <input  id="input_parent_id" type="text" class="form-control"
+                                name="issueId">
+                        </div>
+                    </div>
+                    </div><div class="clearfix"></div>
+                    <button type="submit" class="btn btn-primary pull-right">Remove issue</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/lib.js"></script>
+<script src="/js/tinymce/tinymce.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
+
+</body>
+</html>
