@@ -22,7 +22,7 @@ public class DepartmentService {
         departmentDAO.add(department);
     }
 
-    public Department get(int id){
+    public Department getByID(int id){
         return departmentDAO.getByID(id);
     }
 

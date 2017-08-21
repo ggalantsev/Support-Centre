@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
 
-    <title>Support centre</title>
+    <title>Issues</title>
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/jquery-ui.min.css" rel="stylesheet">
     <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
@@ -36,9 +36,19 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
             <ul class="nav navbar-nav">
-                <li><a href="/">Main</a></li>
+                <li class="active"><a href="/">Main</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
             </ul>
-            <form id="#form_search"  method="post" action="/search" class="navbar-form navbar-left">
+            <form id="#form_search" method="post" action="/search" class="navbar-form navbar-left">
                 <div class="input-group">
                     <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
                            placeholder="Search for...">
@@ -77,7 +87,7 @@
         <!-- Left sidebar -->
         <div class="sidebar" id="sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="/admin">Overview <span class="sr-only">(current)</span></a></li>
+                <li><a href="/admin/">Overview <span class="sr-only">(current)</span></a></li>
                 <li><a role="button" data-toggle="collapse" href="#collapseDepartments"
                        aria-expanded="false" aria-controls="collapseDepartments">Departments <span class="caret"></span></a></li>
                 <div class="collapse" id="collapseDepartments">
@@ -88,7 +98,7 @@
                                th:text="${d.name} ">Department</a></li>
                     </ul>
                 </div>
-                <li><a href="/admin/issues">Issues</a></li>
+                <li class="active"><a href="/admin/issues">Issues</a></li>
                 <li><a href="/admin/users">Users</a></li>
             </ul>
             <form method="post" action="/search">
@@ -111,16 +121,36 @@
                             data-toggle="offcanvas" style="margin:0px"><span class="glyphicon glyphicon-option-vertical"></span></button>
                 </p>
 
-            <h2 class="sub-header">Overview</h2>
+            <p th:text="${Alert}"></p>
 
-            <div class="col-md-4">
-                <div class="list-group">
-                    <a class="list-group-item" th:each="d:${departments}"
-                            th:utext="${d.name} + '<span class=badge>'+${#lists.size(d.issues)}+'</span>'"
-                            th:href="'/admin/department/'+${d.slug}">
-                    </a>
-                </div>
-            </div>
+            <h2 class="sub-header">Issues</h2>
+
+            <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>ID</th>
+                                    <th>Parent ID</th>
+                                    <th>Department</th>
+                                    <th>Date created</th>
+                                    <th>Date modified</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="i,counter:${issues}">
+                                    <td th:text="${counter.count}">1</td>
+                                    <td><a th:href="'/admin/issue/'+${i.id}" th:text="${i.name}">Name</a> </td>
+                                    <td th:text="${i.id}">ID</td>
+                                    <td th:text="${i.pid}">Parent ID</td>
+                                    <td><a th:href="'/admin/department/'+${i.department.slug}" th:text="${i.department.name}">Name</a> </td>
+                                    <td>22.22.2222</td>
+                                    <td>22.22.2222</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
         </div>
 
     </div>

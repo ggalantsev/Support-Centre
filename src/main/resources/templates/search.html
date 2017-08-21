@@ -43,7 +43,8 @@
                     <ul class="nav navbar-nav">
                         <li><a href="/">Main</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Action</a></li>
                                 <li><a href="#">Another action</a></li>
@@ -55,18 +56,19 @@
                     </ul>
                     <form method="post" action="/search" class="navbar-form navbar-left">
                         <div class="input-group">
-                            <input type="text" name="pattern" class="form-control" style="margin-top:6px"
-                                   placeholder="Search for...">
+                            <input id="menu-search" type="text" name="pattern" class="form-control"
+                                   style="margin-top:6px" placeholder="Search for...">
                             <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Go!</button>
-                    </span>
+                                <button class="btn btn-default" type="submit">Go!</button>
+                            </span>
                         </div>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li th:if="${#httpServletRequest.remoteUser ne null}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                role="button" aria-haspopup="true" aria-expanded="false"
-                               th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username <span class="caret"></span></a>
+                               th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username
+                                <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="text-align-right" href="/admin">Admin panel</a></li>
                                 <li>
@@ -86,7 +88,7 @@
 
         <!-- Left sidebar -->
         <div class=" col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar">
-            <div class="list-group" >
+            <div class="list-group">
                 <a th:each="d : ${departments}"
                    href="#" th:href="@{|/department/${d.slug}|}"
                    class="list-group-item"
@@ -97,53 +99,55 @@
         <!-- Content -->
         <div class=" col-xs-12 col-sm-9 col-md-10 " style="padding: 0px">
 
-            <!-- Search -->
             <div class="col-md-10">
+                <!-- For hided left sidebar -->
                 <p class="pull-left visible-xs" style="margin:0px">
                     <button type="button" class="btn btn-primary btn-xs"
-                            data-toggle="offcanvas" style="margin:0px">Departments</button>
+                            data-toggle="offcanvas" style="margin:0px">Departments
+                    </button>
                 </p>
-                <div class="panel panel-default"    >
-        <!-- Default panel contents -->
-        <div class="panel-heading"><h2>Search</h2></div>
-        <div class="panel-body">
-            <form id="form_search" method="post" action="/search" class="well-sm">
-                <div class="input-group col-sm-10 col-sm-offset-1">
-                    <input id="search" type="text" name="pattern" class="form-control" placeholder="Search for issue"
-                    th:value="${pattern}">
-                    <span class="input-group-btn">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><h2>Search</h2></div>
+                    <div class="panel-body">
+                        <form id="form_search" method="post" action="/search" class="well-sm">
+                            <div class="input-group col-sm-10 col-sm-offset-1">
+                                <input id="search" type="text" name="pattern" class="form-control"
+                                       placeholder="Search for issue"
+                                       th:value="${pattern}">
+                                <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">Find issue!</button>
                     </span>
-                </div>
-            </form>
-            <div th:switch="${pattern}">
-                <!--<span th:case="null"></span>-->
-                <div th:case="''"></div>
-                <p th:case="*">Search result for: <b th:text="${pattern}">pattern</b>.</p>
-                <div th:case="*"></div>
-            </div>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item"
-                    th:if="${#lists.isEmpty(issues)}">
-                <h3>Nothing to show</h3>
-            </li>
-            <li class="list-group-item" th:each="s : ${issues}">
-                <h3><a href="/department/it" th:href="@{|/department/${s.department.slug}|}">
-                    <button type="button"
-                            class="btn btn-primary btn-xs pull-right"
-                            th:class="|btn btn-xs pull-right btn-primary
+                            </div>
+                        </form>
+                        <div th:switch="${pattern}">
+                            <div th:case="''"></div>
+                            <div th:case="null"></div>
+                            <p th:case="*">Search result for: <b th:text="${pattern}">pattern</b>.</p>
+                        </div>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"
+                            th:if="${#lists.isEmpty(issues)}">
+                            <h3>Nothing to show</h3>
+                        </li>
+                        <li class="list-group-item" th:each="s : ${issues}">
+                            <h3><a href="/department/it" th:href="@{|/department/${s.department.slug}|}">
+                                <button type="button"
+                                        class="btn btn-primary btn-xs pull-right"
+                                        th:class="|btn btn-xs pull-right btn-primary
                                                              btn-STYLE|"
-                            th:text="${s.department.name}">IT department</button>
-                </a>
-                    <a href="#"
-                       th:href="@{|/issue/${s.id}|}"
-                       th:utext="${s.name}">Search result 1</a>
-                </h3>
-                <p th:utext="${s.content}">Short description of search result</p>
-            </li>
-        </ul>
-    </div>
+                                        th:text="${s.department.name}">IT department
+                                </button>
+                            </a>
+                                <a href="#"
+                                   th:href="@{|/issue/${s.id}|}"
+                                   th:utext="${s.name}">Search result 1</a>
+                            </h3>
+                            <p th:utext="${s.content}">Short description of search result</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Right sidebar -->

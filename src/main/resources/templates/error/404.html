@@ -9,7 +9,7 @@
     <link rel="icon" href="../../favicon.ico">
     <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-    <title>Log in. Support centre.</title>
+    <title>Error 404. Support centre.</title>
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/jquery-ui.min.css" rel="stylesheet">
     <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
@@ -36,7 +36,20 @@
                     <img alt="Support centre" src="/img/logo.png">
                 </a>
             </div>
-            <div class="collapse navbar-collapse" id="navbar">
+            <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Main</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
                 <form id="form_search" method="post" action="/search" class="navbar-form navbar-left">
                     <div class="input-group">
                         <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
@@ -68,43 +81,34 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div class="alert alert-danger col-md-6 col-md-offset-3" role="alert" th:if="${param.error}">
-            <strong>Invalid username or password!</strong>
+    <div class=" hidden-xs col-sm-3"></div>
+
+    <!-- Content -->
+    <div class=" col-sm-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>404 error</h1></div>
+        <div class="panel-body">
+            <p>Page not found!</p>
         </div>
-        <div class="alert alert-success col-md-6 col-md-offset-3" role="alert" th:if="${param.logout}">
-            <strong>You have been logged out.</strong>
-        </div>
-    <form class="form-signin" th:action="@{/login}" method="post">
-        <h2 class="form-signin-heading">Please sign in*</h2>
-        <label for="username" class="sr-only">Username</label>
-        <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <input class="btn-lg btn-primary btn-block" type="submit" value="Sign in"></input>
-        <p class="pull-right"><br>*user : password</p>
-    </form>
-</div> <!-- /container -->
+    </div>
+</div>
+
+    <div class=" hidden-xs col-sm-3"></div>
 
 </div>
 
 <!-- Footer -->
 <footer class="footer">
     <div class="container">
-        Powered by <a href="https://www.fb.com/g.galantsev">George Galantsev</a>.
+        Powered by <a target="_blank" href="https://www.fb.com/g.galantsev">George Galantsev</a>.
     </div>
 </footer>
 
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-ui.min.js"></script>
-<script src="/js/lib.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/lib.js"></script>
 
 </body>
 </html>

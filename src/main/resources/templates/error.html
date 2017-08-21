@@ -86,9 +86,12 @@
     <!-- Content -->
     <div class=" col-sm-6">
     <div class="panel panel-default">
-        <div class="panel-heading"><h1>404/500</h1></div>
+        <div class="panel-heading">
+            <h1 th:text="${error}">404/500</h1>
+        </div>
         <div class="panel-body">
-            <p>Page not found or some error occurred.</p>
+            <h3>Message:</h3><p th:text="${message}">Default Error Message</p>
+            <h3>Exception:</h3><p th:text="${exception}">Default Error Message</p>
         </div>
     </div>
 </div>

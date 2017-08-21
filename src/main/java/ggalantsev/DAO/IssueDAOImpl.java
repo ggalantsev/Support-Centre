@@ -17,8 +17,8 @@ public class IssueDAOImpl implements IssueDAO{
     private EntityManager entityManager;
 
     @Override
-    public void add(Issue issue) {
-        entityManager.merge(new Issue(issue.getPid(),issue.getName(),issue.getContent(),issue.getDepartment()));
+    public Issue add(Issue issue) {
+        return entityManager.merge(new Issue(issue.getPid(), issue.getName(), issue.getContent(), issue.getDepartment()));
     }
 
     @Override
@@ -42,16 +42,16 @@ public class IssueDAOImpl implements IssueDAO{
 
     @Override
     public List<Issue> getAll() {
-        return (List<Issue>) entityManager.createQuery(
+        return entityManager.createQuery(
                 "select s from Issue s " +
-                   "order by s.pid, s.name",Issue.class)
+                   "order by s.id",Issue.class)
                 .getResultList();
 
     }
 
     @Override
     public List<Issue> getChilds(int pid) {
-        return (List<Issue>) entityManager.createQuery(
+        return entityManager.createQuery(
                 "select s from Issue s where s.pid like :pid order by s.name",
                 Issue.class).setParameter("pid",pid).getResultList();
     }
@@ -73,7 +73,7 @@ public class IssueDAOImpl implements IssueDAO{
 
     @Override
     public List<Issue> searchIssues(String pattern) {
-        return (List<Issue>) entityManager.createQuery(
+        return entityManager.createQuery(
                 "select s from Issue s where s.content like :pattern or s.name like :pattern order by s.id",
                 Issue.class).setParameter("pattern","%"+pattern+"%").getResultList();
     }

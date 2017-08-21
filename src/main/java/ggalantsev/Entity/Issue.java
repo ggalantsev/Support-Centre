@@ -22,7 +22,7 @@ public class Issue {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "text")
     private String content;
 
     @ManyToOne

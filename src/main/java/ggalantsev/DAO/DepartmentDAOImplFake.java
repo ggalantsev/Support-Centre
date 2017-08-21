@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("JpaQlInspection")
 @Repository("FakeDep")
 public class DepartmentDAOImplFake implements DepartmentDAO {
 
@@ -55,4 +54,5 @@ public class DepartmentDAOImplFake implements DepartmentDAO {
         System.out.println("Fake DAO getall");
         return departments.values().stream().collect(Collectors.toList());
     }
+
 }

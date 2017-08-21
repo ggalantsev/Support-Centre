@@ -1,1 +1,2 @@
-- cascade removing child issues
+- Cascade removing child issues on demand
+- Alerts when removing

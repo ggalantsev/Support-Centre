@@ -20,13 +20,13 @@ public class IssueDAOImplFake implements IssueDAO{
 
 
     @Override
-    public void add(Issue issue) {
+    public Issue add(Issue issue) {
         for (int i = issues.size(); i < 200000; i++) {
             if (this.issues.containsKey(i)){
                 continue;
             } this.issues.put(i,issue);
         }
-
+        return issue;
     }
 
     @Override

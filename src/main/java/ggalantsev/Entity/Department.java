@@ -1,5 +1,7 @@
 package ggalantsev.Entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class Department {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @NotNull
@@ -30,7 +32,7 @@ public class Department {
 
     public Department() {}
 
-    public Department(String name, String description,String slug) {
+    public Department(String name, String description, String slug) {
         this.name = name;
         this.description = description;
         this.slug = slug;

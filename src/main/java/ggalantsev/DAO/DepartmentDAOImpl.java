@@ -7,13 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@SuppressWarnings("JpaQlInspection")
 @Repository("MySQLDepartments")
 public class DepartmentDAOImpl implements DepartmentDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public void add(Department department) {
@@ -31,7 +29,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public Department getBySlug(String slug) {
-        return (Department) entityManager.createQuery(
+        return entityManager.createQuery(
                 "select d from Department d where d.slug LIKE :slug",
                 Department.class).setParameter("slug",slug)
                 .getSingleResult();
@@ -53,9 +51,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public List<Department> getAll() {
-        return (List<Department>) entityManager.createQuery(
+        return entityManager.createQuery(
                 "select d from Department d " +
                    "order by d.name", Department.class)
                 .getResultList();
     }
+
 }

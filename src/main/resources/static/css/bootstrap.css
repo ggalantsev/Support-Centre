@@ -221,7 +221,13 @@ th {
   .row-offcanvas-left
   .sidebar-offcanvas {
     left: -50%; /* 6 columns */
+    padding: 0px;
   }
+
+  .sidebar-offcanvas > .list-group {
+    padding-left: 30px;
+  }
+
 
   .row-offcanvas-right.active {
     right: 50%; /* 6 columns */
@@ -244,7 +250,7 @@ background-color: #f0f0f0;
 z-index: 1000;
 top: 40px;
 position: fixed;
-padding: 20px;
+padding: 20px 0;
 bottom: 0px;
 border-right: 1px solid #e7e7e7;
 overflow-x: hidden;
@@ -262,6 +268,18 @@ overflow-y: auto;
   .sidebar {
     width: 16.66666667%;
   }
+}
+
+@media screen and (max-width: 767px)  {
+  .sidebar{
+    width: 33%;
+    left: -33%;
+  }
+
+  .sidebar.active{
+    left: 0%;
+  }
+
 }
 
 /* Sticky footer styles
@@ -2623,7 +2641,6 @@ table th[class*="col-"] {
     margin-bottom: 15px;
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #ddd;
   }
   .table-responsive > .table {
     margin-bottom: 0;
@@ -3179,8 +3196,8 @@ select[multiple].input-lg {
 .btn {
   display: inline-block;
   padding: 6px 12px;
-  margin: 6px;
-  /*margin-bottom: 0;*/
+  margin-top: 6px;
+  /*margin-bottom: 6px;*/
   font-size: 14px;
   font-weight: normal;
   line-height: 1.42857143;
@@ -4157,6 +4174,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   display: block;
 }
+.nav > li.active {
+  background-color: #e7e7e7 ;
+}
 .nav > li > a {
   position: relative;
   display: block;
@@ -4165,7 +4185,13 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eee;
+  background-color: #E7E7E7;
+}
+.nav-sidebar-child > li > a {
+  position: relative;
+  display: block;
+  padding: 5px 5px 5px 30px;
+  font-size: 12px;
 }
 .nav > li.disabled > a {
   color: #777;

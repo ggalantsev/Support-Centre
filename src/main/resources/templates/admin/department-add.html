@@ -16,6 +16,9 @@
     <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
     <link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
 
+    <link href="/css/bootstrap-editor.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -36,9 +39,19 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
             <ul class="nav navbar-nav">
-                <li><a href="/">Main</a></li>
+                <li class="active"><a href="/">Main</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
             </ul>
-            <form id="#form_search"  method="post" action="/search" class="navbar-form navbar-left">
+            <form id="#form_search" method="post" action="/search" class="navbar-form navbar-left">
                 <div class="input-group">
                     <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
                            placeholder="Search for...">
@@ -77,10 +90,10 @@
         <!-- Left sidebar -->
         <div class="sidebar" id="sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="/admin">Overview <span class="sr-only">(current)</span></a></li>
-                <li><a role="button" data-toggle="collapse" href="#collapseDepartments"
-                       aria-expanded="false" aria-controls="collapseDepartments">Departments <span class="caret"></span></a></li>
-                <div class="collapse" id="collapseDepartments">
+                <li><a href="/admin">Overview <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a role="button" data-toggle="collapse" href="#collapseDepartments"
+                                      aria-expanded="false" aria-controls="collapseDepartments">Departments <span class="caret"></span></a></li>
+                <div class="collapse in" id="collapseDepartments">
                     <ul class="nav nav-sidebar-child">
                         <li><a href="/admin/departments"><b>All departments</b></a></li>
                         <li><a th:each="d : ${departments}"
@@ -111,15 +124,36 @@
                             data-toggle="offcanvas" style="margin:0px"><span class="glyphicon glyphicon-option-vertical"></span></button>
                 </p>
 
-            <h2 class="sub-header">Overview</h2>
+            <!--Department data-->
+            <div class=" col-lg-8">
+                <h2 class="sub-header">Add department</h2>
+                <div th:utext="${alert}" th:if="${alert} ne null"
+                     class="alert alert-danger"></div>
 
-            <div class="col-md-4">
-                <div class="list-group">
-                    <a class="list-group-item" th:each="d:${departments}"
-                            th:utext="${d.name} + '<span class=badge>'+${#lists.size(d.issues)}+'</span>'"
-                            th:href="'/admin/department/'+${d.slug}">
-                    </a>
-                </div>
+                    <form method="post" action="/admin/department/add/" class="well-sm" id="wysiwyg-form">
+                        <div class="form-group col-md-6">
+                            <label for="input_department_name" class="control-label">Department name</label>
+                            <input id="input_department_name" type="text" class="form-control"
+                                   name="departmentName" th:value="${departmentName}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input_slug" class="control-label">Slug</label>
+                            <input  id="input_slug" type="text" class="form-control"
+                                    name="departmentSlug" th:value="${departmentSlug}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="editor" class="control-label">Description</label>
+                            <div id="editor-toolbar" class="btn-toolbar"
+                                 data-role="editor-toolbar" data-target="#editor">
+                            </div>
+                            <div id="alerts"></div>
+                            <div id="editor" th:utext="${departmentDescription}"></div>
+                            <textarea hidden name='departmentDescription'
+                                      id='wysiwyg-input'></textarea>
+                            <a class="btn btn-primary jumbo" href="#!"
+                               id="submit" title="Save changes (Ctrl/Cmd+Enter)">Save</a>
+                            <div class="clearfix"></div>
+                    </form>
             </div>
         </div>
 
@@ -136,8 +170,11 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-ui.min.js"></script>
-<script src="/js/lib.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+
+<script src="/js/jquery.hotkeys.js"></script>
+<script src="/js/bootstrap-editor.js"></script>
+<script src="/js/lib.js"></script>
 
 </body>
 </html>

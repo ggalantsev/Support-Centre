@@ -18,8 +18,8 @@ public class IssueService {
     private IssueDAO issueDAO;
 
     @Transactional
-    public void addIssue(Issue issue) {
-        issueDAO.add(issue);
+    public Issue addIssue(Issue issue) {
+        return issueDAO.add(issue);
     }
 
     @Transactional
@@ -51,11 +51,11 @@ public class IssueService {
     public List<Issue> getParrentList(int pid){
         return issueDAO.getParrentList(pid);
     }
+
     @Transactional
     public List<Issue> searchIssues(String pattern){
-        return this.issueDAO.searchIssues(pattern);
+        List<Issue> issues = this.issueDAO.searchIssues(pattern);
+        return issues;
     }
-
-
 
 }

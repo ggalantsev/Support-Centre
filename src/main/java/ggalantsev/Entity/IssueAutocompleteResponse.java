@@ -1,8 +1,5 @@
 package ggalantsev.Entity;
 
-/**
- * Created by AlonE_Angel on 05.03.2017.
- */
 public class IssueAutocompleteResponse {
 
     String value;
