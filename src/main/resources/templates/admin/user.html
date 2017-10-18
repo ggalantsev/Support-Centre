@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+
+    <title>Support centre</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-editor.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"/>
+
+</head>
+<body>
+
+<!-- NavBar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img alt="Support centre" src="/img/logo.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Main</a></li>
+
+            </ul>
+            <form id="#form_search" method="post" action="/search" class="navbar-form navbar-left">
+                <div class="input-group">
+                    <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
+                           placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${#httpServletRequest.remoteUser ne null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"
+                       th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="text-align-right" href="/admin">Admin panel</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <input class="submitToURL text-align-right" type="submit" value="Sign Out"/>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li th:if="${#httpServletRequest.remoteUser eq null}">
+                    <a href="/login">Log in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page -->
+<div class="container-fluid">
+
+    <div class="row row-offcanvas row-offcanvas-left">
+
+        <!-- Left sidebar -->
+        <div class="sidebar" id="sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="/admin">Overview <span class="sr-only">(current)</span></a></li>
+                <li><a role="button" data-toggle="collapse" href="#collapseDepartments"
+                       aria-expanded="false" aria-controls="collapseDepartments">Departments <span class="caret"></span></a>
+                </li>
+                <div class="collapse in" id="collapseDepartments">
+                    <ul class="nav nav-sidebar-child">
+                        <li><a href="/admin/departments"><b>All departments</b></a></li>
+                        <li><a th:each="d : ${departments}"
+                               href="#" th:href="@{|/admin/department/${d.slug}|}"
+                               th:text="${d.name} ">Department</a></li>
+                    </ul>
+                </div>
+                <li><a href="/admin/issues">Issues</a></li>
+                <li><a class="active" sec:authorize="hasRole('ROLE_ADMIN')" href="/admin/users">Users</a></li>
+            </ul>
+            <form method="post" action="/search">
+                <div class="input-group col-sm-10 col-sm-offset-1">
+                    <input type="text" name="pattern" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Content -->
+        <div class="col-sm-offset-3 col-md-offset-2 col-xs-12 col-sm-9 col-md-10 " style="margin-top: 55px">
+            <!-- Main content -->
+            <div class="col-lg-8">
+                <h2 class="sub-header" th:text="|Edit user &quot${user.username}&quot|">Edit user "username"</h2>
+                <div class="alert alert-success" role="alert"
+                     th:if="${Notification ne null}"
+                     th:text="${Notification}">Notification text
+                </div>
+                <div class="alert alert-danger" role="alert"
+                     th:if="${Alert ne null}"
+                     th:text="${Alert}">Alert text
+                </div>
+
+                <form method="post" action="/admin/user/save/">
+                    <div class="form-group col-md-6">
+                        <label for="input_username" class="control-label">Username</label>
+                        <input id="input_username" type="text" class="form-control"
+                               name="username" th:value="${user.username}">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input_id" class="control-label">ID</label>
+                        <input id="input_id" type="text" class="form-control"
+                               name="id" th:value="${user.id}" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input_name" class="control-label">Name</label>
+                        <input id="input_name" type="text" class="form-control"
+                               name="name" th:value="${user.name}">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input_surname" class="control-label">Surname</label>
+                        <input id="input_surname" type="text" class="form-control"
+                               name="surname" th:value="${user.surname}">
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="password1" class="control-label">Change password</label>
+                        <input id="password1" type="password" class="form-control"
+                               name="password1">
+                        <label for="password2" class="control-label">Repeat password</label>
+                        <input id="password2" type="password" class="form-control"
+                               name="password2">
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="control-label">User activation</h4>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="accountNonExpired" th:checked="${user.accountNonExpired}"> Not
+                            Expired</label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="accountNonLocked" th:checked="${user.accountNonLocked}"> Not
+                            Locked</label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="credentialsNonExpired"
+                                   th:checked="${user.credentialsNonExpired}"> Credentials Not Expired</label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="enabled" th:checked="${user.enabled}"> Enabled</label>
+                        <h4 class="control-label">User roles</h4>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="roleAdmin"
+                                   th:checked="${#strings.contains(user.authorities, 'ROLE_ADMIN')}">Role admin</label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="roleUser"
+                                   th:checked="${#strings.contains(user.authorities,'ROLE_USER')}">Role user</label>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary"
+                                id="submit" title="Save changes">Save
+                        </button>
+                        <a th:href="'/admin/user/remove/'+${user.id}"
+                           href="#" type="button" class="btn btn-danger pull-right">Remove</a>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </form>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-lg-4 well-sm">
+
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        Powered by <a target="_blank" href="https://www.fb.com/g.galantsev">George Galantsev</a>.
+    </div>
+</footer>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+<script src="/js/jquery.hotkeys.js"></script>
+<script src="/js/bootstrap-editor.js"></script>
+<script src="/js/lib.js"></script>
+
+</body>
+</html>

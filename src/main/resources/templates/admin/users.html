@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+
+    <title>Issues</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/css/jquery-ui.theme.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- NavBar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img alt="Support centre" src="/img/logo.png">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Main</a></li>
+
+            </ul>
+            <form id="#form_search" method="post" action="/search" class="navbar-form navbar-left">
+                <div class="input-group">
+                    <input id="search" type="text" name="pattern" class="form-control" style="margin-top:6px"
+                           placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${#httpServletRequest.remoteUser ne null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"
+                       th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="text-align-right" href="/admin">Admin panel</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <input class="submitToURL text-align-right" type="submit" value="Sign Out"/>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li th:if="${#httpServletRequest.remoteUser eq null}">
+                    <a href="/login">Log in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page -->
+<div class="container-fluid">
+
+    <div class="row row-offcanvas row-offcanvas-left">
+
+        <!-- Left sidebar -->
+        <div class="sidebar" id="sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="/admin/">Overview <span class="sr-only">(current)</span></a></li>
+                <li><a role="button" data-toggle="collapse" href="#collapseDepartments"
+                       aria-expanded="false" aria-controls="collapseDepartments">Departments <span class="caret"></span></a>
+                </li>
+                <div class="collapse" id="collapseDepartments">
+                    <ul class="nav nav-sidebar-child">
+                        <li><a href="/admin/departments"><b>All departments</b></a></li>
+                        <li><a th:each="d : ${departments}"
+                               href="#" th:href="@{|/admin/department/${d.slug}|}"
+                               th:text="${d.name} ">Department</a></li>
+                    </ul>
+                </div>
+                <li><a href="/admin/issues">Issues</a></li>
+                <li class="active"><a href="/admin/users">Users</a></li>
+            </ul>
+            <form method="post" action="/search">
+                <div class="input-group col-sm-10 col-sm-offset-1">
+                    <input type="text" name="pattern" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Content -->
+        <div class="col-sm-offset-3 col-md-offset-2 col-xs-12 col-sm-9 col-md-10 " style="margin-top: 55px">
+            <!-- Main content -->
+            <p class="pull-left visible-xs" style="margin:0px">
+                <button type="button" class="btn btn-primary btn-xs"
+                        data-toggle="offcanvas" style="margin:0px"><span
+                        class="glyphicon glyphicon-option-vertical"></span></button>
+            </p>
+
+            <h2 class="sub-header">Users
+                <a href="/admin/user/add/" type="button" style="margin:0"
+                   class="btn btn-default btn-sm">Add user</a></h2>
+
+            <div class="alert alert-danger" role="alert"
+                 th:if="${Alert} ne null and ${Alert} ne ''"
+                 th:utext="${Alert}">Alert text</div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Roles</th>
+                        <th>Active</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="u,counter:${users}">
+                        <td th:text="${counter.count}">1</td>
+                        <td><a th:href="'/admin/user/'+${u.id}" th:text="${u.username}">Username</a></td>
+                        <td><span th:if="${u.name} ne null" th:text="${u.name}">Name</span>
+                            <span th:if="${u.surname} ne null" th:text="${u.surname}">Surname</span></td>
+                        <td th:text="${u.id}">ID</td>
+                        <td th:text="${u.authorities}">Roles</td>
+                        <td><span
+                                th:if="${u.accountNonExpired and u.accountNonLocked and u.credentialsNonExpired and u.enabled}"
+                                th:text="Yes" class="label label-success">Yes</span>
+                            <span th:if="not ${u.accountNonExpired and u.accountNonLocked and u.credentialsNonExpired and u.enabled}"
+                                  th:text="No" class="label label-danger">No</span></td>
+                        <td><a th:href="'/admin/user/remove/'+${u.id}" href="#" type="button"
+                               ><span class="glyphicon glyphicon-remove"></span></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        Powered by <a target="_blank" href="https://www.fb.com/g.galantsev">George Galantsev</a>.
+    </div>
+</footer>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/lib.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+</html>
