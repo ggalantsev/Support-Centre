@@ -5,11 +5,11 @@
 
 	<groupId>ggalantsev</groupId>
 	<artifactId>scfj</artifactId>
-	<version>0.9</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<name>Support Centre for Jira</name>
-	<description>Spring Boot, Spring Security, Bootstrap, etc.</description>
+	<description>Spring (Boot, MVC, Security), JPA/Hibernate, MySQL, Thymeleaf, Bootstrap, etc.</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -26,7 +26,7 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
@@ -74,6 +74,14 @@
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.21</version>
 		</dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+
 	</dependencies>
 
 	<build>
