@@ -41,16 +41,7 @@
             <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">Main</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </li>
+
                 </ul>
                 <form method="post" action="/search" class="navbar-form navbar-left">
                     <div class="input-group">
@@ -95,7 +86,7 @@
     <!-- Content -->
     <div class=" col-xs-12 col-sm-9 col-md-10 " style="padding: 0px">
         <!-- Main content -->
-        <div class=" col-md-10">
+        <div class=" col-md-9">
             <p class="pull-left visible-xs" style="margin:0px">
                 <button type="button" class="btn btn-primary btn-xs"
                         data-toggle="offcanvas" style="margin:0px">Department navigator</button>
@@ -124,7 +115,19 @@
     </div>
         </div>
         <!-- Right sidebar -->
-        <div class="col-sm-12 col-md-2"></div>
+        <div class="col-sm-12 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        REST API
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <p><a href="http://j.soulfire.kiev.ua/api/issues">Get Issues JSON</a></p>
+                    <p><a href="http://j.soulfire.kiev.ua/api/departments">Get Departments JSON</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

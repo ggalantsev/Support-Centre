@@ -39,16 +39,7 @@
             <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
                 <ul class="nav navbar-nav">
                     <li><a href="/">Main</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </li>
+
                 </ul>
                 <form id="form_search" method="post" action="/search" class="navbar-form navbar-left">
                     <div class="input-group">
@@ -84,14 +75,21 @@
     <div class=" hidden-xs col-sm-3"></div>
 
     <!-- Content -->
-    <div class=" col-sm-6">
+    <div class="clearfix"></div>
+    <div class="col-sm-offset-2 col-sm-8">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h1 th:text="${error}">404/500</h1>
         </div>
         <div class="panel-body">
-            <h3>Message:</h3><p th:text="${message}">Default Error Message</p>
-            <h3>Exception:</h3><p th:text="${exception}">Default Error Message</p>
+            <div th:if="${message ne null}">
+            <h3>Message:</h3>
+                <p class="alert alert-danger" th:text="${message}">Default Error Message</p>
+            </div>
+            <div th:if="${exception ne null}">
+                <h3>Exception:</h3>
+                <p class="alert alert-danger" th:text="${exception}">Default Error Message</p>
+            </div>
         </div>
     </div>
 </div>
