@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
@@ -37,16 +38,7 @@
         <div class="collapse navbar-collapse" id="navbar"> <!--id="bs-example-navbar-collapse-1">-->
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Main</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </li>
+
             </ul>
             <form method="post" action="/search" class="navbar-form navbar-left">
                 <div class="input-group">
@@ -61,7 +53,8 @@
                 <li th:if="${#httpServletRequest.remoteUser ne null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                        role="button" aria-haspopup="true" aria-expanded="false"
-                       th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username <span class="caret"></span></a>
+                       th:utext="|${#httpServletRequest.remoteUser} <span class=&quot;caret&quot;></span>|">Username
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a class="text-align-right" href="/admin">Admin panel</a></li>
                         <li>
@@ -89,7 +82,8 @@
             <ul class="nav nav-sidebar">
                 <li><a href="/admin">Overview <span class="sr-only">(current)</span></a></li>
                 <li class="active"><a role="button" data-toggle="collapse" href="#collapseDepartments"
-                       aria-expanded="false" aria-controls="collapseDepartments">Departments <span class="caret"></span></a></li>
+                                      aria-expanded="false" aria-controls="collapseDepartments">Departments <span
+                        class="caret"></span></a></li>
                 <div class="collapse in" id="collapseDepartments">
                     <ul class="nav nav-sidebar-child">
                         <li><a href="/admin/departments"><b>All departments</b></a></li>
@@ -99,7 +93,7 @@
                     </ul>
                 </div>
                 <li><a href="/admin/issues">Issues</a></li>
-                <li><a href="/admin/users">Users</a></li>
+                <li><a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin/users">Users</a></li>
             </ul>
             <form method="post" action="/search">
                 <div class="input-group col-sm-10 col-sm-offset-1">
@@ -117,36 +111,40 @@
         <div class="col-sm-offset-3 col-md-offset-2 col-xs-12 col-sm-9 col-md-10 " style="margin-top: 55px">
             <!-- Main content -->
             <p class="pull-left visible-xs" style="margin:0px">
-                    <button type="button" class="btn btn-primary btn-xs"
-                            data-toggle="offcanvas" style="margin:0px"><span class="glyphicon glyphicon-option-vertical"></span></button>
-                </p>
-
-            <p th:text="${Alert}"></p>
+                <button type="button" class="btn btn-primary btn-xs"
+                        data-toggle="offcanvas" style="margin:0px"><span
+                        class="glyphicon glyphicon-option-vertical"></span></button>
+            </p>
 
             <h2 class="sub-header">Departments
                 <a href="/admin/department/add/" type="button" style="margin:0"
                    class="btn btn-default btn-sm">Add department</a></h2>
 
+            <div class="alert alert-danger" role="alert"
+                 th:if="${Alert} ne null"
+                 th:utext="${Alert}">Alert text
+            </div>
+
             <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Amount of issues</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="d,counter:${departments}">
-                                    <td th:text="${counter.count}">1</td>
-                                    <td><a th:href="'/admin/department/'+${d.slug}" th:text="${d.name}">Name</a> </td>
-                                    <td th:text="${d.slug}">slug</td>
-                                    <td th:text="${#lists.size(d.issues)}">22</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Amount of issues</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="d,counter:${departments}">
+                        <td th:text="${counter.count}">1</td>
+                        <td><a th:href="'/admin/department/'+${d.slug}" th:text="${d.name}">Name</a></td>
+                        <td th:text="${d.slug}">slug</td>
+                        <td th:text="${#lists.size(d.issues)}">22</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>

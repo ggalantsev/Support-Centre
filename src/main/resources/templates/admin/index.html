@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -89,7 +89,7 @@
                     </ul>
                 </div>
                 <li><a href="/admin/issues">Issues</a></li>
-                <li><a href="/admin/users">Users</a></li>
+                <li><a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin/users">Users</a></li>
             </ul>
             <form method="post" action="/search">
                 <div class="input-group col-sm-10 col-sm-offset-1">
