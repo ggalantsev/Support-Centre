@@ -4,6 +4,7 @@ import ggalantsev.Entity.Department;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -29,11 +30,16 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public Department getBySlug(String slug) {
-        return entityManager.createQuery(
-                "select d from Department d where d.slug LIKE :slug",
-                Department.class).setParameter("slug",slug)
-                .getSingleResult();
-        //.getResultList().getByID(0);
+        Department department = null;
+        try {
+            department = entityManager.createQuery(
+                    "select d from Department d where d.slug = :slug",
+                    Department.class).setParameter("slug", slug)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return department;
     }
 
     @Override

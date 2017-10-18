@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +17,12 @@ public class IssueDAOImpl implements IssueDAO{
 
     @Override
     public Issue add(Issue issue) {
-        return entityManager.merge(new Issue(issue.getPid(), issue.getName(), issue.getContent(), issue.getDepartment()));
+        return entityManager.merge(
+                new Issue(
+                        issue.getPid(),
+                        issue.getName(),
+                        issue.getContent(),
+                        issue.getDepartment()));
     }
 
     @Override
@@ -58,17 +62,17 @@ public class IssueDAOImpl implements IssueDAO{
 
     @Override
     public List<Issue> getParrentList(int pid) {
-        List<Issue> sList = new ArrayList<>();
+        List<Issue> issues = new ArrayList<>();
         while (pid!=0) {
             Issue s = entityManager.createQuery(
                     "select s from Issue s where s.id=:pid",
                     Issue.class).setParameter("pid", pid)
                     .getSingleResult();
             pid = s.getPid();
-            sList.add(s);
+            issues.add(s);
         }
-        Collections.reverse(sList);
-        return sList;
+        Collections.reverse(issues);
+        return issues;
     }
 
     @Override

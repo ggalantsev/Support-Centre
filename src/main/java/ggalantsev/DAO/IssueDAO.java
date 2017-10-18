@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
-@Qualifier(value = "MySQLIssue")
-//@Qualifier(value = "Fake")
 public interface IssueDAO {
 
     Issue add(Issue issue);
