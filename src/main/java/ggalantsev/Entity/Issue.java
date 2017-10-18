@@ -1,9 +1,19 @@
 package ggalantsev.Entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.DatabaseMetaData;
 import java.util.Date;
+
+//lombok
+@Getter
+@Setter
+@ToString
 
 @Entity
 @Table(name = "issues")
@@ -41,52 +51,4 @@ public class Issue {
         this.department = department;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    @Override
-    public String toString() {
-        return "Issue #" + id +
-                ", pid: " + pid +
-                ", name: " + name +
-                ", content: " + content +
-                '.';
-    }
 }

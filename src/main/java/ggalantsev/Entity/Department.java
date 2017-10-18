@@ -1,11 +1,18 @@
 package ggalantsev.Entity;
 
-import org.hibernate.annotations.Type;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+//lombok
+@Getter
+@Setter
+@ToString
 
 @Entity
 @Table(name = "departments")
@@ -27,7 +34,7 @@ public class Department {
     @Column(name = "slug")
     private String slug;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Issue> issues = new ArrayList<>();
 
     public Department() {}
@@ -36,55 +43,5 @@ public class Department {
         this.name = name;
         this.description = description;
         this.slug = slug;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public List<Issue> getIssues() {
-        return issues;
-    }
-
-    public void setIssues(List<Issue> issues) {
-        this.issues = issues;
-    }
-
-    @Override
-    public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", slug='" + slug + '\'' +
-                '}';
     }
 }
