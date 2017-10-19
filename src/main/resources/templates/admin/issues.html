@@ -127,8 +127,6 @@
                                     <th>ID</th>
                                     <th>Parent ID</th>
                                     <th>Department</th>
-                                    <th>Date created</th>
-                                    <th>Date modified</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -138,8 +136,6 @@
                                     <td th:text="${i.id}">ID</td>
                                     <td th:text="${i.pid}">Parent ID</td>
                                     <td><a th:href="'/admin/department/'+${i.department.slug}" th:text="${i.department.name}">Name</a> </td>
-                                    <td>22.22.2222</td>
-                                    <td>22.22.2222</td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -56,7 +56,7 @@ public class Controller {
     @RequestMapping(value = "/admin/departments", method = RequestMethod.GET)
     public String adminDepartmentsPage(Model model, HttpServletRequest request) {
         model.addAttribute("departments", departmentService.getAll());
-        return "/admin/departments";
+        return "admin/departments";
     }
 
     @RequestMapping("/admin/department/{slug}")
